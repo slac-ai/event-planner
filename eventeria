@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eventeria — Vadodara's Celebration Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0d0a;
+    --bg-alt: #12160f;
+    --panel: #161c15;
+    --gold: #c9a24b;
+    --gold-light: #e6cd8c;
+    --wine: #5c1a24;
+    --wine-light: #7c2432;
+    --ivory: #f1ead9;
+    --ivory-dim: #cfc6ae;
+    --sage: #2c352a;
+    --line: rgba(201,162,75,0.25);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--bg);
+    color: var(--ivory);
+    font-family:'Jost', sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--gold); color:#0a0d0a;}
+
+  h1,h2,h3, .display{
+    font-family:'Cinzel', serif;
+    letter-spacing:0.04em;
+    font-weight:600;
+    color: var(--ivory);
+  }
+  .eyebrow{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:500;
+    letter-spacing:0.08em;
+    color: var(--gold-light);
+    font-size:1.05rem;
+    display:inline-block;
+    margin-bottom:14px;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  section{position:relative;}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 32px;}
+
+  /* ---------- CURTAIN INTRO ---------- */
+  .curtain{
+    position:fixed; inset:0; z-index:9999; display:flex; pointer-events:none;
+  }
+  .curtain-panel{
+    flex:1; background:
+      linear-gradient(180deg, #1d1006 0%, #2b1108 35%, #170a05 100%);
+    position:relative;
+    box-shadow: inset 0 0 120px rgba(0,0,0,0.6);
+    animation: curtainOpen 1.8s cubic-bezier(.77,0,.18,1) 0.4s forwards;
+  }
+  .curtain-panel::after{
+    content:''; position:absolute; inset:0;
+    background-image: repeating-linear-gradient(90deg, rgba(0,0,0,0.18) 0 6px, rgba(255,255,255,0.03) 6px 12px);
+  }
+  .curtain-panel.left{animation-name: curtainOpenLeft;}
+  .curtain-panel.right{animation-name: curtainOpenRight;}
+  .curtain-seam{
+    position:absolute; top:0; bottom:0; width:3px; background:linear-gradient(180deg,var(--gold-light),var(--gold));
+    box-shadow:0 0 20px var(--gold);
+  }
+  .curtain-panel.left .curtain-seam{right:0;}
+  .curtain-panel.right .curtain-seam{left:0;}
+  @keyframes curtainOpenLeft{ to{ transform: translateX(-102%); } }
+  @keyframes curtainOpenRight{ to{ transform: translateX(102%); } }
+  @media (prefers-reduced-motion: reduce){
+    .curtain-panel{animation-duration:0.01s;}
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:500;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 40px;
+    background:linear-gradient(180deg, rgba(10,13,10,0.85), transparent);
+    backdrop-filter:blur(2px);
+  }
+  .logo{font-family:'Cinzel',serif; font-size:1.4rem; letter-spacing:0.15em; color:var(--ivory);}
+  .logo span{color:var(--gold);}
+  nav.links{display:flex; gap:36px; font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase;}
+  nav.links a{opacity:0.85; transition:opacity .3s, color .3s; position:relative;}
+  nav.links a:hover{opacity:1; color:var(--gold-light);}
+  .nav-cta{
+    border:1px solid var(--gold); padding:10px 22px; border-radius:2px;
+    font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase;
+    transition: all .35s;
+  }
+  .nav-cta:hover{background:var(--gold); color:#0a0d0a;}
+  .menu-toggle{display:none; font-size:1.6rem; color:var(--gold); background:none; border:none; cursor:pointer;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; position:relative; padding:140px 24px 80px;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(92,26,36,0.4), transparent 60%),
+      linear-gradient(180deg, rgba(8,10,8,0.55) 0%, rgba(9,11,9,0.75) 55%, #0a0d0a 100%),
+      url("https://images.unsplash.com/photo-1745573672923-6cf4c5979dd2?auto=format&fit=crop&w=1920&q=80");
+    background-size: cover;
+    background-position: center 30%;
+  }
+  .hero::before{
+    content:''; position:absolute; inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events:none;
+  }
+  .hero h1{
+    font-size:clamp(2.8rem, 7vw, 6rem); line-height:1.02; margin:10px 0 22px;
+    text-shadow: 0 0 60px rgba(201,162,75,0.25);
+  }
+  .hero h1 em{
+    font-style:italic; font-family:'Cormorant Garamond', serif; color: var(--gold-light); font-weight:500;
+  }
+  .hero p.sub{
+    max-width:620px; margin:0 auto 42px; font-size:1.15rem; line-height:1.7; color:var(--ivory-dim); font-weight:300;
+  }
+  .cta-row{display:flex; gap:20px; flex-wrap:wrap; justify-content:center; margin-bottom:56px;}
+  .btn{
+    padding:16px 34px; font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase;
+    border-radius:2px; transition: all .35s ease; cursor:pointer; display:inline-block;
+  }
+  .btn-primary{background:linear-gradient(135deg, var(--gold-light), var(--gold)); color:#1a1005; font-weight:500; box-shadow:0 8px 30px rgba(201,162,75,0.25); border:1px solid transparent;}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 14px 40px rgba(201,162,75,0.4);}
+  .btn-outline{border:1px solid rgba(241,234,217,0.4); color:var(--ivory);}
+  .btn-outline:hover{border-color:var(--gold); color:var(--gold-light);}
+
+  .trust-strip{
+    display:flex; flex-wrap:wrap; gap:14px 40px; justify-content:center; align-items:center;
+    padding-top:30px; border-top:1px solid var(--line); max-width:800px; margin:0 auto;
+  }
+  .trust-item{display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--ivory-dim); letter-spacing:0.03em;}
+  .trust-item strong{color:var(--gold-light); font-weight:500;}
+  .stars{color:var(--gold); letter-spacing:1px;}
+
+  /* ---------- MEHENDI DIVIDER ---------- */
+  .divider{display:flex; justify-content:center; padding:70px 0; opacity:0.9;}
+  .divider svg{width:260px; height:auto;}
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section-head{text-align:center; max-width:680px; margin:0 auto 64px;}
+  .section-head h2{font-size:clamp(2rem,4vw,3rem); line-height:1.15;}
+  .section-head p{color:var(--ivory-dim); margin-top:18px; font-size:1.05rem; line-height:1.7;}
+
+  /* ---------- ABOUT ---------- */
+  .about{padding:120px 0 40px;}
+  .about-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:70px; align-items:center;}
+  .about-visual{
+    aspect-ratio:4/5; border-radius:3px; position:relative; overflow:hidden;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(201,162,75,0.25), transparent 55%),
+      radial-gradient(circle at 80% 80%, rgba(92,26,36,0.45), transparent 55%),
+      linear-gradient(160deg, #1a1c16, #0c0e0b);
+    border:1px solid var(--line);
+  }
+  .about-visual .mono{
+    position:absolute; inset:24px; border:1px solid rgba(201,162,75,0.3);
+  }
+  .about-visual .quote-mark{
+    position:absolute; bottom:36px; left:36px; right:36px;
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-size:1.4rem; color:var(--gold-light); line-height:1.5;
+  }
+  .about-copy h2{margin-bottom:24px;}
+  .about-copy p{color:var(--ivory-dim); line-height:1.85; margin-bottom:20px; font-size:1.02rem;}
+  .about-copy .signature{font-family:'Cormorant Garamond', serif; font-style:italic; color:var(--gold-light); font-size:1.2rem; margin-top:10px;}
+  .stat-row{display:flex; gap:50px; margin-top:44px; flex-wrap:wrap;}
+  .stat-row .num{font-family:'Cinzel',serif; font-size:2.2rem; color:var(--gold-light);}
+  .stat-row .lbl{font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ivory-dim); margin-top:4px;}
+
+  /* ---------- SERVICES ---------- */
+  .services{padding:60px 0 120px; background:linear-gradient(180deg, transparent, rgba(92,26,36,0.06), transparent);}
+  .service-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .service-card{
+    background:var(--bg); padding:48px 38px; transition: background .4s;
+    position:relative; overflow:hidden;
+  }
+  .service-card:hover{background:var(--panel);}
+  .service-card::before{
+    content:''; position:absolute; top:0; left:0; width:0; height:2px; background:var(--gold); transition:width .5s;
+  }
+  .service-card:hover::before{width:100%;}
+  .service-num{font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--gold); font-size:1rem; margin-bottom:18px; display:block;}
+  .service-card h3{font-size:1.3rem; margin-bottom:14px; letter-spacing:0.02em;}
+  .service-card p{color:var(--ivory-dim); font-size:0.95rem; line-height:1.7;}
+
+  /* ---------- PROCESS ---------- */
+  .process{padding:60px 0 130px;}
+  .process-row{display:grid; grid-template-columns:repeat(3,1fr); gap:50px; margin-top:20px;}
+  .process-step{text-align:center; padding:0 20px;}
+  .process-step .stepno{
+    width:64px; height:64px; border:1px solid var(--gold); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; margin:0 auto 24px;
+    font-family:'Cinzel',serif; color:var(--gold-light);
+  }
+  .process-step h3{font-size:1.15rem; margin-bottom:12px;}
+  .process-step p{color:var(--ivory-dim); font-size:0.92rem; line-height:1.7;}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testimonials{padding:40px 0 130px; background:var(--bg-alt); position:relative;}
+  .test-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:30px;}
+  .test-card{
+    background:var(--panel); border:1px solid var(--line); padding:36px 32px; border-radius:2px;
+    display:flex; flex-direction:column; gap:18px;
+  }
+  .test-card .stars{font-size:0.95rem;}
+  .test-card p.quote{color:var(--ivory-dim); font-size:0.98rem; line-height:1.75; font-style:italic; font-family:'Cormorant Garamond', serif; font-size:1.15rem;}
+  .test-foot{display:flex; align-items:center; gap:14px; margin-top:auto; padding-top:10px; border-top:1px solid var(--line);}
+  .avatar{
+    width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--wine));
+    display:flex; align-items:center; justify-content:center; font-family:'Cinzel',serif; color:#0a0d0a; font-weight:700;
+  }
+  .test-name{font-size:0.9rem; color:var(--ivory);}
+  .test-meta{font-size:0.75rem; color:var(--ivory-dim); letter-spacing:0.03em;}
+
+  /* ---------- GALLERY STRIP ---------- */
+  .gallery{padding:0 0 130px;}
+  .gallery-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; height:340px;}
+  .gallery-grid div{border-radius:2px; position:relative; overflow:hidden; border:1px solid var(--line);}
+  .g1{background:radial-gradient(circle at 30% 30%, rgba(201,162,75,0.35), transparent 60%), linear-gradient(150deg,#241a10,#0c0e0b);}
+  .g2{background:radial-gradient(circle at 70% 40%, rgba(92,26,36,0.5), transparent 60%), linear-gradient(150deg,#1c1010,#0c0e0b); grid-row: span 1;}
+  .g3{background:radial-gradient(circle at 50% 60%, rgba(46,58,42,0.6), transparent 60%), linear-gradient(150deg,#141a12,#0c0e0b);}
+  .g4{background:radial-gradient(circle at 40% 20%, rgba(201,162,75,0.2), transparent 60%), linear-gradient(150deg,#20140f,#0c0e0b);}
+
+  /* ---------- CTA BANNER ---------- */
+  .cta-banner{
+    padding:130px 0; text-align:center; position:relative;
+    background:
+      radial-gradient(ellipse 70% 100% at 50% 50%, rgba(92,26,36,0.3), transparent 70%),
+      linear-gradient(180deg, #0a0d0a, #10140d);
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .cta-banner h2{font-size:clamp(2.2rem,5vw,3.4rem); margin-bottom:20px;}
+  .cta-banner p{color:var(--ivory-dim); max-width:540px; margin:0 auto 40px; font-size:1.05rem;}
+
+  /* ---------- CONTACT ---------- */
+  .contact{padding:120px 0;}
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:stretch;}
+  .contact-info h2{margin-bottom:20px;}
+  .contact-info p.lead{color:var(--ivory-dim); margin-bottom:36px; line-height:1.75;}
+  .info-item{display:flex; gap:18px; padding:20px 0; border-top:1px solid var(--line);}
+  .info-item:last-child{border-bottom:1px solid var(--line);}
+  .info-item .ico{color:var(--gold); font-family:'Cinzel',serif; font-size:1.1rem; width:26px;}
+  .info-item .label{font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ivory-dim); margin-bottom:4px;}
+  .info-item .val{font-size:1rem; color:var(--ivory);}
+  .map-wrap{border:1px solid var(--line); border-radius:2px; overflow:hidden; min-height:340px;}
+  .map-wrap iframe{width:100%; height:100%; min-height:340px; border:0; filter:grayscale(0.4) invert(0.92) contrast(0.9);}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:60px 0 30px; border-top:1px solid var(--line);}
+  .footer-grid{display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:30px; margin-bottom:40px;}
+  .foot-logo{font-family:'Cinzel',serif; font-size:1.5rem; letter-spacing:0.15em;}
+  .foot-logo span{color:var(--gold);}
+  .foot-tag{font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--ivory-dim); margin-top:10px; max-width:300px;}
+  .foot-links{display:flex; gap:60px; flex-wrap:wrap;}
+  .foot-col h4{font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold-light); margin-bottom:16px;}
+  .foot-col a{display:block; color:var(--ivory-dim); font-size:0.9rem; margin-bottom:10px; transition:color .3s;}
+  .foot-col a:hover{color:var(--gold-light);}
+  .foot-bottom{text-align:center; font-size:0.78rem; color:var(--ivory-dim); padding-top:24px; border-top:1px solid var(--line);}
+
+  /* ---------- STICKY CONTACT ---------- */
+  .sticky-cta{
+    position:fixed; bottom:26px; right:26px; z-index:400; display:flex; flex-direction:column; gap:12px;
+  }
+  .sticky-cta a{
+    width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:var(--gold); color:#0a0d0a; font-size:1.3rem; box-shadow:0 8px 24px rgba(0,0,0,0.5);
+    transition:transform .3s;
+  }
+  .sticky-cta a:hover{transform:scale(1.08);}
+
+  /* ---------- REVEAL ON SCROLL ---------- */
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .9s ease, transform .9s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  @media (max-width: 900px){
+    nav.links, .nav-cta{display:none;}
+    .menu-toggle{display:block;}
+    .about-grid, .contact-grid{grid-template-columns:1fr; gap:44px;}
+    .service-grid{grid-template-columns:1fr 1fr;}
+    .process-row{grid-template-columns:1fr; gap:40px;}
+    .test-grid{grid-template-columns:1fr;}
+    .gallery-grid{grid-template-columns:1fr 1fr; height:auto;}
+    .gallery-grid div{height:160px;}
+  }
+  @media (max-width: 560px){
+    .service-grid{grid-template-columns:1fr;}
+    header{padding:18px 20px;}
+    .wrap{padding:0 20px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="curtain" aria-hidden="true">
+  <div class="curtain-panel left"><div class="curtain-seam"></div></div>
+  <div class="curtain-panel right"><div class="curtain-seam"></div></div>
+</div>
+
+<header>
+  <div class="logo">EVENT<span>ERIA</span></div>
+  <nav class="links">
+    <a href="#about">Studio</a>
+    <a href="#services">Services</a>
+    <a href="#testimonials">Reviews</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <a href="tel:+918758739269" class="nav-cta">Call Now</a>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Vadodara's Celebration Studio</div>
+  <h1>Every Occasion, <em>Staged</em><br>to Be Unforgettable</h1>
+  <p class="sub">Weddings, birthdays, baby showers, and mehendi — designed and staged by one trusted team.</p>
+  <div class="cta-row">
+    <a href="#contact" class="btn btn-primary">Plan My Event</a>
+    <a href="tel:+918758739269" class="btn btn-outline">Call 087587 39269</a>
+  </div>
+  <div class="trust-strip">
+    <div class="trust-item"><span class="stars">★★★★★</span> <strong>4.9</strong> rating</div>
+    <div class="trust-item"><strong>102</strong> families served</div>
+    <div class="trust-item">Chamunda Nagar, Ajwa Rd, <strong>Vadodara</strong></div>
+    <div class="trust-item"><strong>Open 24 Hours</strong></div>
+  </div>
+</section>
+
+<div class="divider">
+  <svg viewBox="0 0 260 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 20 C 40 5, 60 5, 80 20 C 100 35, 120 35, 130 20 C 140 5, 160 5, 180 20 C 200 35, 220 35, 260 20" stroke="#c9a24b" stroke-width="1"/>
+    <circle cx="130" cy="20" r="4" fill="#c9a24b"/>
+  </svg>
+</div>
+
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div class="about-visual reveal">
+      <div class="mono"></div>
+      <div class="quote-mark">"Our venue was beautifully decorated by Eventeria... Anand bhai had a very professional approach to his work."</div>
+    </div>
+    <div class="about-copy reveal">
+      <div class="eyebrow">The Studio</div>
+      <h2>Led personally by Anand Bhai and a team built on trust</h2>
+      <p>Based on Ajwa Road in the heart of Vadodara, Eventeria has become the name Gujarati families call first — for the wedding sangeet, the first birthday, the baby shower, the mehendi evening. Not because of one grand event, but because of a hundred quietly perfect ones.</p>
+      <p>The studio is known for arriving on time, decorating with care for the full length of the event, and sourcing everything a celebration needs — from florals and lighting to magicians and performers — so hosts can simply be present for their own occasion.</p>
+      <div class="signature">— Anand Bhai, Founder</div>
+      <div class="stat-row">
+        <div><div class="num">4.9 / 5</div><div class="lbl">Average Rating</div></div>
+        <div><div class="num">102</div><div class="lbl">Verified Reviews</div></div>
+        <div><div class="num">24 hrs</div><div class="lbl">Availability</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">What We Craft</div>
+      <h2>Full-Service Event Design</h2>
+      <p>Every celebration is planned, styled, and staged by the same team from first consultation to final teardown.</p>
+    </div>
+    <div class="service-grid">
+      <div class="service-card reveal"><span class="service-num">01</span><h3>Wedding &amp; Sangeet Styling</h3><p>Mandap design, stage decor, lighting, and floral direction for every ceremony of the celebration.</p></div>
+      <div class="service-card reveal"><span class="service-num">02</span><h3>Mehendi Design &amp; Setup</h3><p>Signature mehendi-evening styling — seating, backdrops, and ambience, paired with artist coordination.</p></div>
+      <div class="service-card reveal"><span class="service-num">03</span><h3>Birthday Celebrations</h3><p>Themed decor for milestone birthdays, delivered exactly to brief and set up well ahead of arrival.</p></div>
+      <div class="service-card reveal"><span class="service-num">04</span><h3>Baby Shower Décor</h3><p>Soft, colourful styling built around the family's theme, from balloon work to dessert tables.</p></div>
+      <div class="service-card reveal"><span class="service-num">05</span><h3>Corporate &amp; Venue Styling</h3><p>Polished, on-brief decor for launches, offsites, and private venue functions across Vadodara.</p></div>
+      <div class="service-card reveal"><span class="service-num">06</span><h3>Entertainment &amp; Talent Booking</h3><p>Magicians, performers, and entertainers sourced and coordinated as part of your event, end to end.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">How It Works</div>
+      <h2>From First Call to Final Curtain</h2>
+    </div>
+    <div class="process-row">
+      <div class="process-step reveal"><div class="stepno">01</div><h3>Consultation</h3><p>Call or message Eventeria with your date, venue, and vision — get a plan and price the same day.</p></div>
+      <div class="process-step reveal"><div class="stepno">02</div><h3>Design &amp; Sourcing</h3><p>Decor, florals, lighting, and any entertainment are designed and booked around your theme and budget.</p></div>
+      <div class="process-step reveal"><div class="stepno">03</div><h3>Setup &amp; Execution</h3><p>The team arrives early, styles the venue, and stays through the event to keep everything in place.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials" id="testimonials">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">In Their Words</div>
+      <h2>102 Families, One Standard</h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"Birthday decoration was superb, done on time and exactly as we asked. The team even helped us arrange a magician for the event."</p>
+        <div class="test-foot"><div class="avatar">H</div><div><div class="test-name">Hemant Patil</div><div class="test-meta">11 months ago · Google Review</div></div></div>
+      </div>
+      <div class="test-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"Our venue was beautifully decorated. Setup was timely and carefully maintained throughout — we'll return for every future celebration."</p>
+        <div class="test-foot"><div class="avatar">B</div><div><div class="test-name">Bijal Shah</div><div class="test-meta">1 year ago · Google Review</div></div></div>
+      </div>
+      <div class="test-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"Eventeria made our baby shower colourful and genuinely memorable — every detail felt considered."</p>
+        <div class="test-foot"><div class="avatar">V</div><div><div class="test-name">Vivek Chittroda</div><div class="test-meta">1 year ago · Google Review</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery">
+  <div class="wrap gallery-grid reveal">
+    <div class="g1"></div><div class="g2"></div><div class="g3"></div><div class="g4"></div>
+  </div>
+</section>
+
+<section class="cta-banner">
+  <div class="wrap reveal">
+    <div class="eyebrow">Dates Fill Quickly</div>
+    <h2>Let's Design Your Next Celebration</h2>
+    <p>Tell us your date and vision — Eventeria will handle the design, the décor, and every detail in between.</p>
+    <div class="cta-row">
+      <a href="tel:+918758739269" class="btn btn-primary">Call 087587 39269</a>
+      <a href="#contact" class="btn btn-outline">Send Your Event Details</a>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap contact-grid">
+    <div class="contact-info reveal">
+      <div class="eyebrow">Visit or Call</div>
+      <h2>Open 24 Hours, Every Day</h2>
+      <p class="lead">Based on Ajwa Road, Eventeria is reachable any hour for urgent event needs and new bookings alike.</p>
+      <div class="info-item"><div class="ico">✦</div><div><div class="label">Address</div><div class="val">Chamunda Nagar, 23/1, Ajwa Rd, Vadodara, Gujarat 390019</div></div></div>
+      <div class="info-item"><div class="ico">✦</div><div><div class="label">Phone</div><div class="val"><a href="tel:+918758739269">087587 39269</a></div></div></div>
+      <div class="info-item"><div class="ico">✦</div><div><div class="label">Hours</div><div class="val">Open 24 Hours</div></div></div>
+      <div class="info-item"><div class="ico">✦</div><div><div class="label">Rating</div><div class="val">4.9 out of 5 — 102 Google reviews</div></div></div>
+    </div>
+    <div class="map-wrap reveal">
+      <iframe src="https://www.google.com/maps?q=Chamunda+nagar,+23,+1,+Ajwa+Rd,+Vadodara,+Gujarat+390019&output=embed" loading="lazy" title="Eventeria location map"></iframe>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="foot-logo">EVENT<span>ERIA</span></div>
+        <p class="foot-tag">Vadodara's celebration studio — decor, design, and production for every occasion worth remembering.</p>
+      </div>
+      <div class="foot-links">
+        <div class="foot-col">
+          <h4>Studio</h4>
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#testimonials">Reviews</a>
+        </div>
+        <div class="foot-col">
+          <h4>Contact</h4>
+          <a href="tel:+918758739269">087587 39269</a>
+          <a href="#contact">Ajwa Rd, Vadodara</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">© 2026 Eventeria — Event Management Company, Vadodara. All rights reserved.</div>
+  </div>
+</footer>
+
+<div class="sticky-cta">
+  <a href="tel:+918758739269" title="Call Eventeria" aria-label="Call Eventeria">☎</a>
+</div>
+
+<script>
+  // remove curtain from DOM after animation so it doesn't block interaction
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const c = document.querySelector('.curtain');
+      if(c) c.style.display = 'none';
+    }, 2400);
+  });
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // mobile nav toggle placeholder (links collapse on small screens; CTA remains via sticky button)
+</script>
+</body>
+</html>
